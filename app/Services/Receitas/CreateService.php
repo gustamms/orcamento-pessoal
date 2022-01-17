@@ -20,11 +20,16 @@ class CreateService
             "valor" => $request->valor
         ];
 
-        $this->haveReceitaCreated($request->descricao);
+        $haveReceita = $this->haveReceitaCreated($request->descricao);
+
+        if(!$haveReceita){
+            return $this->receitasRepositories->insert($data);
+        }
         
-        return $this->receitasRepositories->insert($data);
+        return false;
     }
 
+    //TODO: Fazer método verificar dentro do mês se houve receita com mesmo nome
     public function haveReceitaCreated(string $description): bool
     {
         $response = $this->receitasRepositories->getReceitaBySimpleQuery("descricao", $description);
