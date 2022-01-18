@@ -4,7 +4,6 @@ namespace App\Services\Receitas;
 
 use App\Repositories\ReceitasRepositories;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 
 class CreateService
 {
