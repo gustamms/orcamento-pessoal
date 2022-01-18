@@ -8,6 +8,11 @@ use Exception;
 
 class ReceitasRepositories
 {
+    public function list()
+    {
+        return Receitas::all()->toArray();
+    }
+
     public function insert(array $data)
     {
         try {
