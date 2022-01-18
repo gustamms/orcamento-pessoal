@@ -11,6 +11,7 @@ class Receitas extends Model
     protected $fillable = [
         "descricao",
         "valor",
+        "data",
         "updated_at"
     ];
     public static $rules = [

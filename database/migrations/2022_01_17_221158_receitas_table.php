@@ -17,6 +17,7 @@ class ReceitasTable extends Migration
             $table->id();
             $table->string('descricao');
             $table->double('valor');
+            $table->date('data');
             $table->timestamps();
         });
     }

@@ -2,6 +2,8 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Http\Controllers\ReceitaController;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -15,4 +17,12 @@
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+
+$router->group(['prefix' => 'receitas'], function () use ($router) {
+    $router->get('/', 'ReceitasController@index');
+    $router->get('/{id}', 'ReceitasController@show');
+    $router->post('/', 'ReceitasController@store');
+    $router->put('/{id}', 'ReceitasController@update');
+    $router->delete('/{id}', 'ReceitasController@destroy');
 });
