@@ -28,6 +28,11 @@ class ReceitasRepositories
         }
     }
 
+    public function getById(int $receitaId)
+    {
+        return Receitas::where("id", $receitaId)->get()->toArray();
+    }
+
     public function getReceitaBySimpleQuery(string $column, string $value)
     {
         return Receitas::where($column, $value)->get()->toArray();
