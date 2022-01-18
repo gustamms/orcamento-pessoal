@@ -22,6 +22,11 @@ class ReceitasController extends Controller
         return $this->receitasService->listReceitasInDatabase();
     }
 
+    public function show($id)
+    {
+        return $this->receitasService->getReceitaById($id);
+    }
+
     /**
      * Store a new flight in the database.
      *
