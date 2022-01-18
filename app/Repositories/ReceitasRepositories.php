@@ -28,6 +28,21 @@ class ReceitasRepositories
         }
     }
 
+    public function update(int $receitaId, array $data)
+    {
+        try {
+            DB::beginTransaction();
+            Receitas::where("id", $receitaId)->update($data);
+            DB::commit();
+
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            throw new Exception("Erro ao atualizar dado no banco de dados");
+        }
+    }
+
     public function getById(int $receitaId)
     {
         return Receitas::where("id", $receitaId)->get()->toArray();
