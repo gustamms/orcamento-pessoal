@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Receitas;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ReceitasRepositories
 {
@@ -18,7 +19,7 @@ class ReceitasRepositories
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            return false;
+            throw new Exception("Erro ao registrar dado no banco de dados");
         }
     }
 

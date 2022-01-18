@@ -4,6 +4,7 @@ namespace App\Services\Receitas;
 
 use App\Repositories\ReceitasRepositories;
 use Illuminate\Http\Request;
+use Exception;
 
 class CreateService
 {
@@ -30,13 +31,15 @@ class CreateService
         return false;
     }
 
-    //TODO: Fazer método verificar dentro do mês se houve receita com mesmo nome
     public function haveReceitaCreated(string $description): bool
     {
         $response = $this->receitasRepositories->getReceitaBySimpleQuery("descricao", $description);
 
-        if(count($response)){
-            return true;
+        $mesAtual = date("m");
+        $mesReceita = date('m', strtotime(data_get($response, "0.data")));
+        
+        if($mesAtual == $mesReceita && !empty($response)){
+            throw new Exception("Já existe despesa com mesma descrição dentro do mês");
         }
 
         return false;

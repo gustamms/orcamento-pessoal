@@ -22,24 +22,24 @@ class ReceitasController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'descricao' => 'required|max:255',
-            'valor' => 'required',
-            'data' => 'required|date'
-        ]);
-
-        $response = $this->createService->createInDatabase($request);
-
-        if($response){
+        try {
+            $this->validate($request, [
+                'descricao' => 'required|max:255',
+                'valor' => 'required',
+                'data' => 'required|date'
+            ]);
+    
+            $this->createService->createInDatabase($request);
+    
             return response(
                 "Receita criada com sucesso",
                 Response::HTTP_CREATED
             );
+        } catch (\Throwable $th) {
+            return response(
+                $th->getMessage(),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
-
-        return response(
-            "Não foi possível criar receita no banco de dados",
-            Response::HTTP_INTERNAL_SERVER_ERROR
-        );
     }
 }
