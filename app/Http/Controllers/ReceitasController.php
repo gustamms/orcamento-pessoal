@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\Receitas\CreateService;
+use App\Services\Receitas\ReceitasService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ReceitasController extends Controller
 {
     public function __construct(
-        private CreateService $createService
+        private CreateService $createService,
+        private ReceitasService $receitasService
     ) {
         
     }
+
+    public function index()
+    {
+        return $this->receitasService->listReceitasInDatabase();
+    }
+
     /**
      * Store a new flight in the database.
      *
