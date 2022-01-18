@@ -22,6 +22,12 @@ class ReceitasController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'descricao' => 'required|max:255',
+            'valor' => 'required',
+            'data' => 'required|date'
+        ]);
+
         $response = $this->createService->createInDatabase($request);
 
         if($response){

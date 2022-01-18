@@ -4,6 +4,7 @@ namespace App\Services\Receitas;
 
 use App\Repositories\ReceitasRepositories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class CreateService
 {
@@ -17,7 +18,8 @@ class CreateService
     {
         $data = [
             "descricao" => $request->descricao,
-            "valor" => $request->valor
+            "valor" => $request->valor,
+            "data" => date('Y-m-d', strtotime($request->data))
         ];
 
         $haveReceita = $this->haveReceitaCreated($request->descricao);
