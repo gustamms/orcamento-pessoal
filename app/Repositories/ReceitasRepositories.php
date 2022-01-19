@@ -52,4 +52,19 @@ class ReceitasRepositories
     {
         return Receitas::where($column, $value)->get()->toArray();
     }
+
+    public function destroy(int $receitaId)
+    {
+        try {
+            DB::beginTransaction();
+            Receitas::where("id", $receitaId)->delete();
+            DB::commit();
+
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            throw new Exception("Erro ao excluir dado no banco de dados");
+        }
+    }
 }

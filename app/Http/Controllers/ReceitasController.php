@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\Receitas\CreateService;
+use App\Services\Receitas\DestroyService;
 use App\Services\Receitas\ReceitasService;
 use App\Services\Receitas\UpdateService;
 use Illuminate\Http\Request;
@@ -14,7 +15,8 @@ class ReceitasController extends Controller
     public function __construct(
         private CreateService $createService,
         private ReceitasService $receitasService,
-        private UpdateService $updateService
+        private UpdateService $updateService,
+        private DestroyService $destroyService
     ) {
         
     }
@@ -65,6 +67,23 @@ class ReceitasController extends Controller
             
             return response(
                 "Receita alterada com sucesso",
+                Response::HTTP_CREATED
+            );
+        } catch (\Throwable $th) {
+            return response(
+                $th->getMessage(),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        try {
+            $this->destroyService->destroy($id);
+            
+            return response(
+                "Receita excluída com sucesso",
                 Response::HTTP_CREATED
             );
         } catch (\Throwable $th) {
