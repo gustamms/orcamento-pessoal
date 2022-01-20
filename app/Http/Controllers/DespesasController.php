@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\Despesas\CreateService;
 use App\Services\Despesas\DespesaService;
+use App\Services\Despesas\UpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
@@ -12,7 +13,8 @@ class DespesasController extends Controller
 {
     public function __construct(
         private CreateService $createService,
-        private DespesaService $despesaService
+        private DespesaService $despesaService,
+        private UpdateService $updateService
     ) {
     }
 
@@ -38,7 +40,7 @@ class DespesasController extends Controller
             $this->createService->createDespesa($request);
 
             return response(
-                "Receita criada com sucesso",
+                "Despesa criada com sucesso",
                 Response::HTTP_CREATED
             );
         } catch (Exception $e) {
@@ -47,12 +49,29 @@ class DespesasController extends Controller
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
     }
 
     public function update(int $id, Request $request)
     {
-        return 0;
+        try {
+            $this->validate($request, [
+                'descricao' => 'required|max:255',
+                'valor' => 'required',
+                'data' => 'required|date'
+            ]);
+
+            $this->updateService->updateDespesa($id, $request);
+
+            return response(
+                "Despesa alterada com sucesso",
+                Response::HTTP_CREATED
+            );
+        } catch (Exception $e) {
+            return response(
+                $e->getMessage(),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     public function destroy(int $id)

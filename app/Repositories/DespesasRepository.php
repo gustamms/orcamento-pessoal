@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Despesas;
 use Exception;
-use Hamcrest\Core\DescribedAs;
 use Illuminate\Support\Facades\DB;
 
 class DespesasRepository
@@ -34,6 +33,23 @@ class DespesasRepository
     public function getAll()
     {
         return Despesas::all()->toArray();
+    }
+
+    public function update(int $despesaId, array $data)
+    {
+        try {
+            DB::beginTransaction();
+
+            Despesas::where("id", $despesaId)->update($data);
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception("Erro ao atualizar dado no banco de dados");
+        }
     }
 
 }
