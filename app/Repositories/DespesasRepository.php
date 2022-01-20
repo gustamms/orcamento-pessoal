@@ -52,4 +52,21 @@ class DespesasRepository
         }
     }
 
+    public function deleteDespesa(int $despesaId)
+    {
+        try {
+            DB::beginTransaction();
+
+            Despesas::where("id", $despesaId)->delete();
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new Exception("Erro ao excluir dado no banco de dados");
+        }
+    }
+
 }
