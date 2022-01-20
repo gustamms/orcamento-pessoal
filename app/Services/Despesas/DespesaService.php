@@ -31,4 +31,9 @@ class DespesaService
 
         return false;
     }
+
+    public function getById(int $id)
+    {
+        return $this->despesasRepository->getDespesaBySimpleQuery("id", $id);
+    }
 }
