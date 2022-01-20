@@ -23,7 +23,7 @@ class DespesasController extends Controller
 
     public function show(int $id)
     {
-        return 0;
+        return $this->despesaService->getById($id);
     }
 
     public function store(Request $request)
