@@ -76,6 +76,6 @@ class DespesasController extends Controller
 
     public function destroy(int $id)
     {
-        return 0;
+        return $this->despesaService->destroy($id);
     }
 }

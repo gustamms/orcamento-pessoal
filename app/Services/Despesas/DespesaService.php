@@ -36,4 +36,9 @@ class DespesaService
     {
         return $this->despesasRepository->getDespesaBySimpleQuery("id", $id);
     }
+
+    public function destroy(int $id)
+    {
+        return $this->despesasRepository->deleteDespesa($id);
+    }
 }
