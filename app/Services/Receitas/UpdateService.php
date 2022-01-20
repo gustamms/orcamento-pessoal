@@ -11,12 +11,12 @@ class UpdateService
         private ReceitasRepositories $receitasRepositories,
         private ReceitasService $receitasService
     ) {
-        
+
     }
 
     public function updateReceita(int $receitaId, Request $request)
     {
-        $haveReceita = $this->receitasService->haveReceitaCreated($request->descricao);
+        $haveReceita = $this->receitasService->haveReceitaCreated($request->descricao, data_get($data, "data"));
 
         if(!$haveReceita){
             return $this->receitasRepositories->update($receitaId, $request->all());

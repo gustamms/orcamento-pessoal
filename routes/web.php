@@ -26,3 +26,11 @@ $router->group(['prefix' => 'receitas'], function () use ($router) {
     $router->put('/{id}', 'ReceitasController@update');
     $router->delete('/{id}', 'ReceitasController@destroy');
 });
+
+$router->group(['prefix' => 'despesas'], function () use ($router) {
+    $router->get('/', 'DespesasController@index');
+    $router->get('/{id}', 'DespesasController@show');
+    $router->post('/', 'DespesasController@store');
+    $router->put('/{id}', 'DespesasController@update');
+    $router->delete('/{id}', 'DespesasController@destroy');
+});

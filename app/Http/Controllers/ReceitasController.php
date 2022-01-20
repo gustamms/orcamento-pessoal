@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Services\Receitas\CreateService;
 use App\Services\Receitas\DestroyService;
 use App\Services\Receitas\ReceitasService;
@@ -18,7 +17,7 @@ class ReceitasController extends Controller
         private UpdateService $updateService,
         private DestroyService $destroyService
     ) {
-        
+
     }
 
     public function index()
@@ -39,9 +38,9 @@ class ReceitasController extends Controller
                 'valor' => 'required',
                 'data' => 'required|date'
             ]);
-    
+
             $this->createService->createInDatabase($request);
-    
+
             return response(
                 "Receita criada com sucesso",
                 Response::HTTP_CREATED
@@ -64,7 +63,7 @@ class ReceitasController extends Controller
             ]);
 
             $this->updateService->updateReceita($id, $request);
-            
+
             return response(
                 "Receita alterada com sucesso",
                 Response::HTTP_CREATED
@@ -81,7 +80,7 @@ class ReceitasController extends Controller
     {
         try {
             $this->destroyService->destroy($id);
-            
+
             return response(
                 "Receita excluída com sucesso",
                 Response::HTTP_CREATED
