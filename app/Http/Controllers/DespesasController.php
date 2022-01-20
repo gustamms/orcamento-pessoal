@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Despesas\CreateService;
+use App\Services\Despesas\DespesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
@@ -10,13 +11,14 @@ use Exception;
 class DespesasController extends Controller
 {
     public function __construct(
-        private CreateService $createService
+        private CreateService $createService,
+        private DespesaService $despesaService
     ) {
     }
 
     public function index()
     {
-        return 0;
+        return $this->despesaService->getDespesas();
     }
 
     public function show(int $id)
