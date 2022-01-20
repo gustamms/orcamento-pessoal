@@ -2,8 +2,6 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
-use App\Http\Controllers\ReceitaController;
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -25,4 +23,12 @@ $router->group(['prefix' => 'receitas'], function () use ($router) {
     $router->post('/', 'ReceitasController@store');
     $router->put('/{id}', 'ReceitasController@update');
     $router->delete('/{id}', 'ReceitasController@destroy');
+});
+
+$router->group(['prefix' => 'despesas'], function () use ($router) {
+    $router->get('/', 'DespesasController@index');
+    $router->get('/{id}', 'DespesasController@show');
+    $router->post('/', 'DespesasController@store');
+    $router->put('/{id}', 'DespesasController@update');
+    $router->delete('/{id}', 'DespesasController@destroy');
 });

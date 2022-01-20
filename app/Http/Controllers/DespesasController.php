@@ -2,32 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Receitas\CreateService;
-use App\Services\Receitas\DestroyService;
-use App\Services\Receitas\ReceitasService;
-use App\Services\Receitas\UpdateService;
+use App\Services\Despesas\CreateService;
+use App\Services\Despesas\DespesaService;
+use App\Services\Despesas\UpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Exception;
 
-class ReceitasController extends Controller
+class DespesasController extends Controller
 {
     public function __construct(
         private CreateService $createService,
-        private ReceitasService $receitasService,
-        private UpdateService $updateService,
-        private DestroyService $destroyService
+        private DespesaService $despesaService,
+        private UpdateService $updateService
     ) {
-
     }
 
     public function index()
     {
-        return $this->receitasService->listReceitasInDatabase();
+        return $this->despesaService->getDespesas();
     }
 
     public function show(int $id)
     {
-        return $this->receitasService->getReceitaById($id);
+        return $this->despesaService->getById($id);
     }
 
     public function store(Request $request)
@@ -39,15 +37,15 @@ class ReceitasController extends Controller
                 'data' => 'required|date'
             ]);
 
-            $this->createService->createInDatabase($request);
+            $this->createService->createDespesa($request);
 
             return response(
-                "Receita criada com sucesso",
+                "Despesa criada com sucesso",
                 Response::HTTP_CREATED
             );
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
             return response(
-                $th->getMessage(),
+                $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -62,15 +60,15 @@ class ReceitasController extends Controller
                 'data' => 'required|date'
             ]);
 
-            $this->updateService->updateReceita($id, $request);
+            $this->updateService->updateDespesa($id, $request);
 
             return response(
-                "Receita alterada com sucesso",
+                "Despesa alterada com sucesso",
                 Response::HTTP_CREATED
             );
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
             return response(
-                $th->getMessage(),
+                $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -78,18 +76,6 @@ class ReceitasController extends Controller
 
     public function destroy(int $id)
     {
-        try {
-            $this->destroyService->destroy($id);
-
-            return response(
-                "Receita excluída com sucesso",
-                Response::HTTP_CREATED
-            );
-        } catch (\Throwable $th) {
-            return response(
-                $th->getMessage(),
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        }
+        return $this->despesaService->destroy($id);
     }
 }
