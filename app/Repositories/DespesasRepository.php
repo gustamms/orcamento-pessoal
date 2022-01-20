@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Despesas;
 use Exception;
+use Hamcrest\Core\DescribedAs;
 use Illuminate\Support\Facades\DB;
 
 class DespesasRepository
@@ -28,6 +29,11 @@ class DespesasRepository
     public function getDespesaBySimpleQuery(string $column, string $value)
     {
         return Despesas::where($column, $value)->get()->toArray();
+    }
+
+    public function getAll()
+    {
+        return Despesas::all()->toArray();
     }
 
 }

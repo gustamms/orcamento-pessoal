@@ -12,6 +12,11 @@ class DespesaService
     ) {
     }
 
+    public function getDespesas()
+    {
+        return $this->despesasRepository->getAll();
+    }
+
     public function haveDespesaCreated(string $description, mixed $date): bool
     {
         $response = $this->despesasRepository->getDespesaBySimpleQuery("descricao", $description);
