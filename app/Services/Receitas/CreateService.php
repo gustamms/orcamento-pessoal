@@ -11,7 +11,7 @@ class CreateService
         private ReceitasRepositories $receitasRepositories,
         private ReceitasService $receitasService
     ) {
-        
+
     }
 
     public function createInDatabase(Request $request)
@@ -22,12 +22,12 @@ class CreateService
             "data" => date('Y-m-d', strtotime($request->data))
         ];
 
-        $haveReceita = $this->receitasService->haveReceitaCreated($request->descricao);
+        $haveReceita = $this->receitasService->haveReceitaCreated($request->descricao, data_get($data, "data"));
 
         if(!$haveReceita){
             return $this->receitasRepositories->insert($data);
         }
-        
+
         return false;
     }
 }
