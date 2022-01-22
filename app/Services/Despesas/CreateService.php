@@ -10,14 +10,13 @@ class CreateService
 {
     public function __construct(
         private DespesasRepository $despesasRepository,
-        private DespesaService $despesaService
+        private DespesaService $despesaService,
+        private Despesas $despesas
     ) {
     }
 
     public function createDespesa(Request $request)
     {
-        $despesa = new Despesas();
-
         $data = [
             "descricao" => $request->descricao,
             "valor" => $request->valor,
@@ -26,6 +25,6 @@ class CreateService
 
         $this->despesaService->haveDespesaCreated($request->descricao, data_get($data, "data"));
 
-        return $this->despesasRepository->insert($despesa, $data);
+        return $this->despesasRepository->insert($this->despesas, $data);
     }
 }
