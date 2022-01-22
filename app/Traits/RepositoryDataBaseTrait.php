@@ -11,7 +11,7 @@ trait RepositoryDataBaseTrait
      * Insere dados no banco de dados
      * @throws Exception
      */
-    public function insert(Object $object, array $data): bool
+    final public function insert(Object $object, array $data): bool
     {
         try {
             DB::beginTransaction();
@@ -36,7 +36,7 @@ trait RepositoryDataBaseTrait
      * @return bool
      * @throws Exception
      */
-    public function update(Object $object, int $valueId, array $data): bool
+    final public function update(Object $object, int $valueId, array $data): bool
     {
         try {
             DB::beginTransaction();
@@ -60,7 +60,7 @@ trait RepositoryDataBaseTrait
      * @param string $value
      * @return mixed
      */
-    public function getDataBySimpleQuery(Object $object, string $column, string $value): array
+    final public function getDataBySimpleQuery(Object $object, string $column, string $value): array
     {
         return $object::where($column, $value)->get()->toArray();
     }
@@ -70,7 +70,7 @@ trait RepositoryDataBaseTrait
      * @param Object $object
      * @return mixed
      */
-    public function getAllData(Object $object): array
+    final public function getAllData(Object $object): array
     {
         return $object::all()->toArray();
     }
@@ -82,7 +82,7 @@ trait RepositoryDataBaseTrait
      * @return bool
      * @throws Exception
      */
-    public function delete(Object $object, int $valueId): bool
+    final public function delete(Object $object, int $valueId): bool
     {
         try {
             DB::beginTransaction();
