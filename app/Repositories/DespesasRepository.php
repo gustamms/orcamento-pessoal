@@ -2,71 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\Despesas;
-use Exception;
-use Illuminate\Support\Facades\DB;
+use App\Traits\RepositoryDataBaseTrait;
 
 class DespesasRepository
 {
-    public function insert(array $data)
-    {
-        try {
-            DB::beginTransaction();
-
-            Despesas::create($data);
-
-            DB::commit();
-
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            throw new Exception("Erro ao registrar dado no banco de dados");
-        }
-    }
-
-    public function getDespesaBySimpleQuery(string $column, string $value)
-    {
-        return Despesas::where($column, $value)->get()->toArray();
-    }
-
-    public function getAll()
-    {
-        return Despesas::all()->toArray();
-    }
-
-    public function update(int $despesaId, array $data)
-    {
-        try {
-            DB::beginTransaction();
-
-            Despesas::where("id", $despesaId)->update($data);
-
-            DB::commit();
-
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            throw new Exception("Erro ao atualizar dado no banco de dados");
-        }
-    }
-
-    public function deleteDespesa(int $despesaId)
-    {
-        try {
-            DB::beginTransaction();
-
-            Despesas::where("id", $despesaId)->delete();
-
-            DB::commit();
-
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            throw new Exception("Erro ao excluir dado no banco de dados");
-        }
-    }
-
+    use RepositoryDataBaseTrait;
 }

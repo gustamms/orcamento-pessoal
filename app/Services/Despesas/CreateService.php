@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,8 @@ class CreateService
 {
     public function __construct(
         private DespesasRepository $despesasRepository,
-        private DespesaService $despesaService
+        private DespesaService $despesaService,
+        private Despesas $despesas
     ) {
     }
 
@@ -23,6 +25,6 @@ class CreateService
 
         $this->despesaService->haveDespesaCreated($request->descricao, data_get($data, "data"));
 
-        return $this->despesasRepository->insert($data);
+        return $this->despesasRepository->insert($this->despesas, $data);
     }
 }
