@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,8 @@ class CreateService
 
     public function createDespesa(Request $request)
     {
+        $despesa = new Despesas();
+
         $data = [
             "descricao" => $request->descricao,
             "valor" => $request->valor,
@@ -23,6 +26,6 @@ class CreateService
 
         $this->despesaService->haveDespesaCreated($request->descricao, data_get($data, "data"));
 
-        return $this->despesasRepository->insert($data);
+        return $this->despesasRepository->insert($despesa, $data);
     }
 }

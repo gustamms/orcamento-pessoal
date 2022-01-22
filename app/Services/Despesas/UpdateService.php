@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,11 +17,13 @@ class UpdateService
 
     public function updateDespesa(int $despesaId, Request $request)
     {
+        $despesa = new Despesas();
+
         $this->haveDespesaOnDatabase($despesaId);
 
         $this->despesaService->haveDespesaCreated($request->descricao, $request->data);
 
-        return $this->despesasRepository->update($despesaId, $request->all());
+        return $this->despesasRepository->update($despesa, $despesaId, $request->all());
     }
 
     private function haveDespesaOnDatabase(int $id)
