@@ -5,6 +5,10 @@ namespace App\Traits;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
+/**
+ * Trait de comunicação com o banco de dados
+ * Final nos métodos para não serem sobrescritos
+ */
 trait RepositoryDataBaseTrait
 {
     /**
