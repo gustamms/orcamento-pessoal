@@ -39,8 +39,14 @@ class DespesaService
         return $this->despesasRepository->getDataBySimpleQuery($this->despesas, "id", $id);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): bool
     {
+        $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, "id", $id);
+
+        if(empty($response)) {
+            throw new Exception("Não foi possível obter dado de despesa no banco de dados");
+        }
+
         return $this->despesasRepository->delete($this->despesas, $id);
     }
 }

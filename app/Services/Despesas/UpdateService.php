@@ -11,24 +11,23 @@ class UpdateService
 {
     public function __construct(
         private DespesaService $despesaService,
-        private DespesasRepository $despesasRepository
+        private DespesasRepository $despesasRepository,
+        private Despesas $despesas
     ) {
     }
 
     public function updateDespesa(int $despesaId, Request $request)
     {
-        $despesa = new Despesas();
-
         $this->haveDespesaOnDatabase($despesaId);
 
         $this->despesaService->haveDespesaCreated($request->descricao, $request->data);
 
-        return $this->despesasRepository->update($despesa, $despesaId, $request->all());
+        return $this->despesasRepository->update($this->despesas, $despesaId, $request->all());
     }
 
     private function haveDespesaOnDatabase(int $id)
     {
-        $response = $this->despesasRepository->getDespesaBySimpleQuery("id", $id);
+        $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, "id", $id);
 
         if (empty($response)) {
             throw new Exception("Despesa não existe no banco de dados");
