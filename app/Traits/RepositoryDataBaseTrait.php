@@ -26,7 +26,6 @@ trait RepositoryDataBaseTrait
 
             return true;
         } catch (Exception $e) {
-            dd($e);
             DB::rollBack();
 
             throw new Exception("Erro ao registrar dado no banco de dados");

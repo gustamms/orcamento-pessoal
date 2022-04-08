@@ -14,8 +14,11 @@ class ReceitasService
     ) {
     }
 
-    public function listReceitasInDatabase()
+    public function listReceitasInDatabase(?string $filter)
     {
+        if (isset($filter)) {
+            return $this->receitasRepositories->getDataBySimpleQuery($this->receitas, "descricao", $filter);
+        }
         return $this->receitasRepositories->getAllData($this->receitas);
     }
 
