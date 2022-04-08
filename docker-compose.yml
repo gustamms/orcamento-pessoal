@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  database-orcamento:
+    build:
+      context: ./docker
+    container_name: database-orcamento
+    restart: 'always'
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker/mysql/data/mysql:/var/lib/mysql
+      - ./docker/mysql/logs/mysql:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'challenge_alura'
+      MYSQL_USER: 'alura'
+      MYSQL_PASSWORD: 'root'

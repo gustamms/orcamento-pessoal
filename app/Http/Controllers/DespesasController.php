@@ -34,7 +34,8 @@ class DespesasController extends Controller
             $this->validate($request, [
                 'descricao' => 'required|max:255',
                 'valor' => 'required',
-                'data' => 'required|date'
+                'data' => 'required|date',
+                'categoria_id' => 'sometimes|int'
             ]);
 
             $this->createService->createDespesa($request);

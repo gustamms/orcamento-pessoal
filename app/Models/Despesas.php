@@ -12,6 +12,7 @@ class Despesas extends Model
         "descricao",
         "valor",
         "data",
+        "categoria_id",
         "updated_at"
     ];
     public static $rules = [

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,52 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "alimentacao"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "saude"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "moradia"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "transporte"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "educacao"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "lazer"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "imprevistos"
+            ]
+        );
+
+        DB::table('categorias_despesas')->insert(
+            [
+                "descricao" => "outras"
+            ]
+        );
     }
 }
