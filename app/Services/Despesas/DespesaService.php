@@ -14,8 +14,11 @@ class DespesaService
     ) {
     }
 
-    public function getDespesas()
+    public function getDespesas(?string $filter)
     {
+        if (isset($filter)) {
+            return $this->despesasRepository->getDataBySimpleQuery($this->despesas, "descricao", $filter);
+        }
         return $this->despesasRepository->getAllData($this->despesas);
     }
 

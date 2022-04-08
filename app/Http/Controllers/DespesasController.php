@@ -18,9 +18,9 @@ class DespesasController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->despesaService->getDespesas();
+        return $this->despesaService->getDespesas($request->descricao);
     }
 
     public function show(int $id)
