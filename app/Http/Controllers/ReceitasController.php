@@ -20,9 +20,9 @@ class ReceitasController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->receitasService->listReceitasInDatabase();
+        return $this->receitasService->listReceitasInDatabase($request->descricao);
     }
 
     public function show(int $id)
