@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+  api.orcamento-pessoal.dev:
+    container_name: api.orcamento-pessoal.dev
+    image: nginx:1.20
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - bubble
+    depends_on:
+      - app.orcamento-pessoal.dev
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+
+  app.orcamento-pessoal.dev:
+    container_name: app.orcamento-pessoal.dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - bubble
+
+  db.database-orcamento.dev:
+    container_name: db.database-orcamento.dev
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: devel
+      MYSQL_PASSWORD: de
+    networks:
+      - bubble
+    volumes:
+      - db-volume:/var/lib/mysql
+
+volumes:
+  db-volume:
+
+networks:
+  bubble:
+    external: true
