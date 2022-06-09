@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NotFoundException;
 use App\Services\Despesas\CreateService;
 use App\Services\Despesas\DespesaService;
 use App\Services\Despesas\UpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class DespesasController extends Controller
 {
@@ -25,10 +28,17 @@ class DespesasController extends Controller
 
     public function show(int $id)
     {
-        return $this->despesaService->getById($id);
+        try {
+            return $this->despesaService->getById($id);
+        } catch (NotFoundException $e) {
+            return response(
+                $e->getMessage(),
+                Response::HTTP_NOT_FOUND
+            );
+        }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         try {
             $this->validate($request, [
@@ -43,7 +53,7 @@ class DespesasController extends Controller
                 "Despesa criada com sucesso",
                 Response::HTTP_CREATED
             );
-        } catch (Exception $e) {
+        } catch (ValidationException $e) {
             return response(
                 $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
@@ -51,7 +61,7 @@ class DespesasController extends Controller
         }
     }
 
-    public function update(int $id, Request $request)
+    public function update(int $id, Request $request): Response
     {
         try {
             $this->validate($request, [
@@ -66,16 +76,25 @@ class DespesasController extends Controller
                 "Despesa alterada com sucesso",
                 Response::HTTP_CREATED
             );
-        } catch (Exception $e) {
+        } catch (NotFoundException $e) {
             return response(
                 $e->getMessage(),
-                Response::HTTP_INTERNAL_SERVER_ERROR
+                Response::HTTP_NOT_FOUND
             );
         }
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): Response
     {
-        return $this->despesaService->destroy($id);
+        try {
+            $this->despesaService->destroy($id);
+
+            return response('Despesa excluída com sucesso', Response::HTTP_OK);
+        } catch (NotFoundException $e) {
+            return response(
+                $e->getMessage(),
+                Response::HTTP_NOT_FOUND
+            );
+        }
     }
 }

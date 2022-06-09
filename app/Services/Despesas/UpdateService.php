@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Exceptions\NotFoundException;
 use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
 use Exception;
@@ -16,6 +17,9 @@ class UpdateService
     ) {
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function updateDespesa(int $despesaId, Request $request)
     {
         $this->haveDespesaOnDatabase($despesaId);
@@ -30,7 +34,7 @@ class UpdateService
         $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, "id", $id);
 
         if (empty($response)) {
-            throw new Exception("Despesa não existe no banco de dados");
+            throw new NotFoundException('Despesa não existe no banco de dados');
         }
 
         return true;

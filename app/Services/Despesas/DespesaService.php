@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Exceptions\NotFoundException;
 use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
 use Exception;
@@ -34,17 +35,27 @@ class DespesaService
         return false;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function getById(int $id)
     {
-        return $this->despesasRepository->getDataBySimpleQuery($this->despesas, "id", $id);
+        $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, 'id', $id);
+        if (empty($response)) {
+            throw new NotFoundException('Não foi possível obter dado de despesa no banco de dados');
+        }
+        return $response;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function destroy(int $id): bool
     {
         $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, "id", $id);
 
-        if(empty($response)) {
-            throw new Exception("Não foi possível obter dado de despesa no banco de dados");
+        if (empty($response)) {
+            throw new NotFoundException('Não foi possível obter dado de despesa no banco de dados');
         }
 
         return $this->despesasRepository->delete($this->despesas, $id);
