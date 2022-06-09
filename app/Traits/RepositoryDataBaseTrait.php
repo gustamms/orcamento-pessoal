@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Exceptions\DatabaseException;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -13,7 +14,7 @@ trait RepositoryDataBaseTrait
 {
     /**
      * Insere dados no banco de dados
-     * @throws Exception
+     * @throws DatabaseException
      */
     final public function insert(Object $object, array $data): bool
     {
@@ -28,7 +29,7 @@ trait RepositoryDataBaseTrait
         } catch (Exception $e) {
             DB::rollBack();
 
-            throw new Exception("Erro ao registrar dado no banco de dados");
+            throw new DatabaseException($e->getMessage());
         }
     }
 
@@ -45,7 +46,7 @@ trait RepositoryDataBaseTrait
         try {
             DB::beginTransaction();
 
-            $object::where("id", $valueId)->update($data);
+            $object::where('id', $valueId)->update($data);
 
             DB::commit();
 
@@ -53,7 +54,7 @@ trait RepositoryDataBaseTrait
         } catch (Exception $e) {
             DB::rollBack();
 
-            throw new Exception("Erro ao atualizar dado no banco de dados");
+            throw new DatabaseException('Erro ao atualizar dado no banco de dados');
         }
     }
 
@@ -84,14 +85,14 @@ trait RepositoryDataBaseTrait
      * @param Object $object
      * @param int $valueId
      * @return bool
-     * @throws Exception
+     * @throws DatabaseException
      */
     final public function delete(Object $object, int $valueId): bool
     {
         try {
             DB::beginTransaction();
 
-            $object::where("id", $valueId)->delete();
+            $object::where('id', $valueId)->delete();
 
             DB::commit();
 
@@ -99,7 +100,7 @@ trait RepositoryDataBaseTrait
         } catch (Exception $e) {
             DB::rollBack();
 
-            throw new Exception("Erro ao excluir dado no banco de dados");
+            throw new DatabaseException('Erro ao excluir dado no banco de dados');
         }
     }
 }

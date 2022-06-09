@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Exceptions\AlreadyExistsInDatabase;
 use App\Exceptions\NotFoundException;
 use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
@@ -20,15 +21,18 @@ class DespesaService
         return $this->despesasRepository->getAllData($this->despesas);
     }
 
+    /**
+     * @throws AlreadyExistsInDatabase
+     */
     public function haveDespesaCreated(string $description, mixed $date): bool
     {
-        $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, "descricao", $description);
-        $mesDeInsercao = date("m", strtotime($date));
+        $response = $this->despesasRepository->getDataBySimpleQuery($this->despesas, 'descricao', $description);
+        $mesDeInsercao = date('m', strtotime($date));
 
         foreach ($response as $despesa) {
-            $mes = date("m", strtotime(data_get($despesa, "data")));
-            if($mes == $mesDeInsercao) {
-                throw new Exception("Já existe despesa com mesma descrição dentro do mês");
+            $mes = date('m', strtotime(data_get($despesa, 'data')));
+            if ($mes == $mesDeInsercao) {
+                throw new AlreadyExistsInDatabase('Já existe despesa com mesma descrição dentro do mês');
             }
         }
 
@@ -49,6 +53,7 @@ class DespesaService
 
     /**
      * @throws NotFoundException
+     * @throws \App\Exceptions\DatabaseException
      */
     public function destroy(int $id): bool
     {

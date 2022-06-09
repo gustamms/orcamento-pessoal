@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AlreadyExistsInDatabase;
+use App\Exceptions\DatabaseException;
 use App\Exceptions\NotFoundException;
 use App\Services\Despesas\CreateService;
 use App\Services\Despesas\DespesaService;
 use App\Services\Despesas\UpdateService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Exception;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class DespesasController extends Controller
 {
@@ -58,6 +58,16 @@ class DespesasController extends Controller
                 $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
+        } catch (DatabaseException $e) {
+            return response(
+                'Erro ao inserir despesa no banco de dados',
+                response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        } catch (NotFoundException $e) {
+            return response(
+                $e->getMessage(),
+                response::HTTP_NOT_FOUND
+            );
         }
     }
 
@@ -81,6 +91,11 @@ class DespesasController extends Controller
                 $e->getMessage(),
                 Response::HTTP_NOT_FOUND
             );
+        } catch (AlreadyExistsInDatabase $e) {
+            return response(
+                $e->getMessage(),
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
         }
     }
 
@@ -90,7 +105,7 @@ class DespesasController extends Controller
             $this->despesaService->destroy($id);
 
             return response('Despesa excluída com sucesso', Response::HTTP_OK);
-        } catch (NotFoundException $e) {
+        } catch (NotFoundException | DatabaseException $e) {
             return response(
                 $e->getMessage(),
                 Response::HTTP_NOT_FOUND

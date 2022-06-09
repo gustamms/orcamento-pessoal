@@ -2,6 +2,7 @@
 
 namespace App\Services\Despesas;
 
+use App\Exceptions\AlreadyExistsInDatabase;
 use App\Exceptions\NotFoundException;
 use App\Models\Despesas;
 use App\Repositories\DespesasRepository;
@@ -19,8 +20,10 @@ class UpdateService
 
     /**
      * @throws NotFoundException
+     * @throws AlreadyExistsInDatabase
+     * @throws Exception
      */
-    public function updateDespesa(int $despesaId, Request $request)
+    public function updateDespesa(int $despesaId, Request $request): bool
     {
         $this->haveDespesaOnDatabase($despesaId);
 
