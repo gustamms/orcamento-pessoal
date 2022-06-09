@@ -29,7 +29,7 @@ trait RepositoryDataBaseTrait
         } catch (Exception $e) {
             DB::rollBack();
 
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), 500);
         }
     }
 

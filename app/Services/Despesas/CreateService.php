@@ -35,7 +35,7 @@ class CreateService
         ];
 
         if (empty($this->categoriasDespesasService->haveCategoriaWithId($categoriaId))) {
-            throw new NotFoundException('Categoria de despesa não existe');
+            throw new NotFoundException('Categoria de despesa não existe', 404);
         }
 
         $this->despesaService->haveDespesaCreated($request->descricao, data_get($data, "data"));

@@ -32,7 +32,7 @@ class DespesaService
         foreach ($response as $despesa) {
             $mes = date('m', strtotime(data_get($despesa, 'data')));
             if ($mes == $mesDeInsercao) {
-                throw new AlreadyExistsInDatabase('Já existe despesa com mesma descrição dentro do mês');
+                throw new AlreadyExistsInDatabase('Já existe despesa com mesma descrição dentro do mês', 422);
             }
         }
 

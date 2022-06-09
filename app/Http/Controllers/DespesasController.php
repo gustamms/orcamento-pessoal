@@ -50,23 +50,20 @@ class DespesasController extends Controller
             $this->createService->createDespesa($request);
 
             return response(
-                "Despesa criada com sucesso",
+                'Despesa criada com sucesso',
                 Response::HTTP_CREATED
             );
-        } catch (ValidationException $e) {
+        } catch (ValidationException | DatabaseException | NotFoundException $e) {
+            $defaultMessageText = 'Erro ao inserir despesa no banco de dados';
+            if ($e instanceof ValidationException) {
+                $defaultMessageText = $e->errors();
+            }
+            if ($e instanceof NotFoundException) {
+                $defaultMessageText = $e->getMessage();
+            }
             return response(
-                $e->getMessage(),
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        } catch (DatabaseException $e) {
-            return response(
-                'Erro ao inserir despesa no banco de dados',
-                response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        } catch (NotFoundException $e) {
-            return response(
-                $e->getMessage(),
-                response::HTTP_NOT_FOUND
+                $defaultMessageText,
+                $e->status
             );
         }
     }
@@ -86,15 +83,17 @@ class DespesasController extends Controller
                 "Despesa alterada com sucesso",
                 Response::HTTP_CREATED
             );
-        } catch (NotFoundException $e) {
+        } catch (ValidationException | AlreadyExistsInDatabase | NotFoundException $e) {
+            $defaultMessageText = 'Erro ao inserir despesa no banco de dados';
+            if ($e instanceof ValidationException) {
+                $defaultMessageText = $e->errors();
+            }
+            if ($e instanceof NotFoundException || $e instanceof AlreadyExistsInDatabase) {
+                $defaultMessageText = $e->getMessage();
+            }
             return response(
-                $e->getMessage(),
-                Response::HTTP_NOT_FOUND
-            );
-        } catch (AlreadyExistsInDatabase $e) {
-            return response(
-                $e->getMessage(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
+                $defaultMessageText,
+                $e->status
             );
         }
     }
